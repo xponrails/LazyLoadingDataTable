@@ -22,7 +22,7 @@ public class LazyLoadingBufferedMapList<T> extends AbstractList<T>
 
   private int totalResultsNumber;
   private int pageSize = 10;
-  private int bufferSize = pageSize * 3;
+  private int bufferSize = 30;
 
   /** cache of loadedData items */
   private Map<Integer, T> loadedData;
@@ -39,6 +39,7 @@ public class LazyLoadingBufferedMapList<T> extends AbstractList<T>
     this.dataAdapter = dataAdapter;
     this.totalResultsNumber = totalResultsNumber;
     this.pageSize = pageSize;
+    this.bufferSize = pageSize * 3;
     loadedData = new HashMap<Integer, T>();
   }
 

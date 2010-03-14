@@ -1,0 +1,30 @@
+IceFaces provides numerous components to facilitate the development of web applications.
+Among these, one of the most 'useful' is definitely ice:dataTable.
+
+This component, together with ice:dataPaginator makes it possible to paginate the entire data set of a table, showing only N rows per page.
+
+The main weakness of this component lies in the difficulty to handle large data sets: ice:dataTable component need to receive a list containing all rows that will gradually showed.
+As long as we are in the order of some hundreds of records, there is no problem to provide the entire results list to the component; but if they begin to be thousands, keep in memory such a quantity of objects can be an issue.
+
+The solution is to manage the list of results in a lazy way: the list itself will retrieve the records to show in the current page and only when there will be a real need.
+
+Besides this, we need also to manage the total page number: the paginator in fact invokes the method size() of the list supplied to the table calculates the number of pages.
+
+Let’s see three possible implementations to implement the lazy loading of the list.
+
+h2. LazyLoadingList
+
+This list keeps in memory a list of objects corresponding to the first page. When the user navigates in the following pages, they will be retrieved by method get() and saved in a different list. Note that the constructor of the list accepts as incoming parameter totalResultsNumber, that is the total number of results to show in the table. This parameter 'is usually the result of a count query.
+
+h2. LazyLoadingMapList
+
+This list keeps retrieved records in a HashMap. Note that the map is never cleared, so in the worst case (the user scrolls one by one all the pages) it will contains all elements of the dataset.
+
+h2. LazyLoadingBufferedMapList
+
+This list represents an evolution of the previous one, keeping in memory only the elements corresponding to the current page, the previous and the next.
+
+h2. Conclusions
+
+All implementations give the opportunity to retrieve records in a lazy way. Surely the second solution is the most potentially weak as in the worst case will keep in memory all the dataset.
+Surely the third implementation is the best solution from all points of view. It allows to have in memory only a limited number of records and to meet any potential "back and forth" of the user. 
